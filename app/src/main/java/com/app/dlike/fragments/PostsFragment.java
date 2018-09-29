@@ -12,10 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.dlike.Tools;
 import com.app.dlike.adapters.PostsAdapter;
 import com.app.dlike.R;
 import com.app.dlike.api.Steem;
-import com.app.dlike.api.models.Discussion;
+import com.app.dlike.models.Discussion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +48,7 @@ public class PostsFragment extends Fragment {
         errorView = view.findViewById(R.id.errorView);
 
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadDiscussions();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(this::loadDiscussions);
         recyclerView.setAdapter(postsAdapter = new PostsAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemViewCacheSize(20);
@@ -83,7 +79,7 @@ public class PostsFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
         errorView.setVisibility(View.GONE);
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.steemjs.com")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Tools.STEEM_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

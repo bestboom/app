@@ -20,14 +20,10 @@ import com.app.dlike.activities.MainActivity;
 import com.app.dlike.activities.PostActivity;
 import com.app.dlike.api.DLike;
 import com.app.dlike.api.Steem;
-import com.app.dlike.api.models.SubmitPostResponse;
-import com.app.dlike.api.models.VoteOperation;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.app.dlike.models.SubmitPostResponse;
+import com.app.dlike.models.VoteOperation;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;

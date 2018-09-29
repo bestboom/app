@@ -18,9 +18,9 @@ import com.app.dlike.R;
 import com.app.dlike.Tools;
 import com.app.dlike.activities.ViewPostActivity;
 import com.app.dlike.api.Steem;
-import com.app.dlike.api.models.Comment;
-import com.app.dlike.api.models.Discussion;
-import com.app.dlike.api.models.VoteOperation;
+import com.app.dlike.models.Comment;
+import com.app.dlike.models.Discussion;
+import com.app.dlike.models.VoteOperation;
 import com.app.dlike.widgets.VotingDialog;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.squareup.picasso.Picasso;
@@ -151,7 +151,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                         image = discussion.getJSONMetaData().getString("image");
                     }
                     if (image != null && !image.isEmpty()) {
-                        Picasso.with(imageView.getContext())
+                        Picasso.get()
                                 .load(image)
                                 .into(imageView);
                     } else {
@@ -162,7 +162,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                 e.printStackTrace();
             }
 
-            Picasso.with(itemView.getContext())
+            Picasso.get()
                     .load("https://steemitimages.com/u/" + discussion.author + "/avatar")
                     .placeholder(R.drawable.profile)
                     .into(authorImageView);

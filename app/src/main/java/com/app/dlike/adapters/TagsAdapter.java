@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.app.dlike.R;
-import com.app.dlike.api.models.Discussion;
+import com.app.dlike.models.Discussion;
 
 import org.json.JSONArray;
 import org.json.JSONException;

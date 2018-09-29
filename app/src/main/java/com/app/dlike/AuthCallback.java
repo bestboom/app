@@ -27,7 +27,7 @@ public class AuthCallback extends AppCompatActivity {
 
 
     public static final String EXTRA_CODE = "code";
-    public static final String URL = "https://v2.steemconnect.com/oauth2/authorize?client_id=dlike.android&response_type=code&redirect_uri=https://dlike.io/callback-android.php&scope=login%2Cvote%2Ccomment%2Ccomment_options%2Ccustom_json%2Coffline";
+    public static final String URL = "https://steemconnect.com/oauth2/authorize?client_id=dlike.android&response_type=code&redirect_uri=https://dlike.io/callback-android.php&scope=login%2Cvote%2Ccomment%2Ccomment_options%2Ccustom_json%2Coffline";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +65,9 @@ public class AuthCallback extends AppCompatActivity {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             if (url.startsWith("https://dlike.io/callback-android.php")) {
                 Uri uri = Uri.parse(url);
+                Log.e("Error", uri.toString());
                 String code = uri.getQueryParameter("code");
+                Log.e("Errorrr", code);
 
                 Intent intent = new Intent();
                 intent.putExtra(EXTRA_CODE, code);

@@ -16,8 +16,7 @@ import android.widget.TextView;
 import com.app.dlike.R;
 import com.app.dlike.activities.MainActivity;
 import com.app.dlike.activities.PostActivity;
-import com.app.dlike.api.models.Discussion;
-import com.app.dlike.api.models.Draft;
+import com.app.dlike.models.Draft;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.squareup.picasso.Picasso;
 
@@ -81,14 +80,14 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftViewH
 
         public void setDraft(final Draft draft) {
             if (draft.image.startsWith("http")) {
-                Picasso.with(itemView.getContext())
+                Picasso.get()
                         .load(draft.image)
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.placeholder)
                         .into(imageView);
             } else {
                 File file = new File(draft.image);
-                Picasso.with(itemView.getContext())
+                Picasso.get()
                         .load(Uri.fromFile(file))
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.placeholder)

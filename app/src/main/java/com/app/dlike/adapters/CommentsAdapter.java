@@ -16,9 +16,9 @@ import com.app.dlike.activities.MainActivity;
 import com.app.dlike.R;
 import com.app.dlike.Tools;
 import com.app.dlike.api.Steem;
-import com.app.dlike.api.models.Comment;
-import com.app.dlike.api.models.Discussion;
-import com.app.dlike.api.models.VoteOperation;
+import com.app.dlike.models.Comment;
+import com.app.dlike.models.Discussion;
+import com.app.dlike.models.VoteOperation;
 import com.app.dlike.widgets.VotingDialog;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.squareup.picasso.Picasso;
@@ -103,7 +103,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
             author.setText(discussion.author);
             timeAgo.setText(TimeAgo.using(convertDate(discussion.created)));
-            Picasso.with(itemView.getContext())
+            Picasso.get()
                     .load("https://steemitimages.com/u/" + discussion.author + "/avatar")
                     .placeholder(R.drawable.profile)
                     .into(authorImageView);

@@ -2,6 +2,7 @@ package com.app.dlike.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -16,6 +17,7 @@ import com.app.dlike.R;
 import com.app.dlike.Tools;
 import com.app.dlike.adapters.UserAccountViewPagerAdapter;
 import com.app.dlike.fragments.PostsFragment;
+import com.app.dlike.services.BackgroundService;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -53,7 +55,7 @@ public class UserAccountActivity extends LoginRequestActivity {
 
         String username = Tools.getUsername(this);
 
-        Picasso.with(this)
+        Picasso.get()
                 .load("https://steemitimages.com/u/" + username + "/avatar")
                 .placeholder(R.drawable.profile)
                 .into(userAccountImage);
@@ -72,6 +74,9 @@ public class UserAccountActivity extends LoginRequestActivity {
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.home:
+                onBackPressed();
+                break;
             case R.id.action_logout:
                 logout();
                 break;
@@ -87,6 +92,7 @@ public class UserAccountActivity extends LoginRequestActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Tools.clearAuthentication(UserAccountActivity.this);
+                        stopService(new Intent(UserAccountActivity.this, BackgroundService.class));
                         finish();
                     }
                 }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

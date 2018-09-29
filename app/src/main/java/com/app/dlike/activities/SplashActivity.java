@@ -8,8 +8,18 @@ import android.os.Bundle;
 import com.app.dlike.R;
 import com.app.dlike.Tools;
 import com.app.dlike.api.Steem;
-import com.app.dlike.api.models.LoginResponse;
-import com.app.dlike.api.models.RefreshTokenRequest;
+import com.app.dlike.models.LoginResponse;
+import com.app.dlike.models.RefreshTokenRequest;
+import com.app.dlike.models.UpVoteModel;
+import com.app.dlike.services.BackgroundService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,16 +33,13 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        startService(new Intent(SplashActivity.this, BackgroundService.class));
         Handler hnd = new Handler();
-        hnd.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(Tools.isLoggedIn(SplashActivity.this) && Tools.tokenExpired(SplashActivity.this)){
-                    refreshToken();
-                }else{
-                    startMainActivity();
-                }
+        hnd.postDelayed(() -> {
+            if(Tools.isLoggedIn(SplashActivity.this) && Tools.tokenExpired(SplashActivity.this)){
+                refreshToken();
+            }else{
+                startMainActivity();
             }
         },2000);
 
@@ -40,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void refreshToken() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://v2.steemconnect.com/")
+                .baseUrl("https://steemconnect.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -53,6 +60,7 @@ public class SplashActivity extends AppCompatActivity {
                         if(loginResponse == null){
                             unableToRefreshToken();
                         }else{
+
                             Tools.setAuthentication(SplashActivity.this, loginResponse.accessToken, loginResponse.refreshToken, loginResponse.username);
                             startMainActivity();
                         }

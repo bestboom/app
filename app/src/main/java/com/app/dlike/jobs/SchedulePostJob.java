@@ -1,18 +1,15 @@
 package com.app.dlike.jobs;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
 
 import com.app.dlike.Tools;
-import com.app.dlike.activities.PostActivity;
 import com.app.dlike.api.DLike;
 import com.app.dlike.api.Steem;
-import com.app.dlike.api.models.Draft;
-import com.app.dlike.api.models.SubmitPostResponse;
-import com.app.dlike.api.models.VoteOperation;
+import com.app.dlike.models.Draft;
+import com.app.dlike.models.SubmitPostResponse;
+import com.app.dlike.models.VoteOperation;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 

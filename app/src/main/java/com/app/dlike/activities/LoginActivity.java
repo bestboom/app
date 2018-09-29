@@ -1,21 +1,22 @@
 package com.app.dlike.activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.app.dlike.AuthCallback;
 import com.app.dlike.R;
+import com.app.dlike.Tools;
 import com.app.dlike.api.Steem;
-import com.app.dlike.api.models.LoginRequest;
-import com.app.dlike.api.models.LoginResponse;
+import com.app.dlike.models.LoginRequest;
+import com.app.dlike.models.LoginResponse;
+import com.app.dlike.services.BackgroundService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String EXTRA_ACCESS_TOKEN = "access_token";
     public static final String EXTRA_USERNAME = "username";
     public static final String EXTRA_REFRESH_TOKEN = "refresh_token";
+    public static final String TAG = "Login";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_AUTHENTICATION) {
             if (resultCode == Activity.RESULT_OK) {
                 String code = data.getStringExtra(AuthCallback.EXTRA_CODE);
-
                 requestRefreshToken(code);
             }
         }
@@ -75,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://v2.steemconnect.com/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://steemconnect.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                 .enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        Tools.log(TAG, response.toString());
                         progressDialog.dismiss();
                         LoginResponse loginResponse = response.body();
                         if (loginResponse != null) {
@@ -95,12 +97,14 @@ public class LoginActivity extends AppCompatActivity {
                             setResult(Activity.RESULT_OK, intent);
                             finish();
                         } else {
+                            //Tools.log(TAG, );
                             unableToLogin();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
+                        Tools.log(TAG, t.toString());
                         progressDialog.dismiss();
                         unableToLogin();
                     }
