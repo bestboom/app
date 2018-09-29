@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.app.dlike.Tools;
+import com.app.dlike.services.BackgroundService;
 
 /**
  * Created by moses on 8/26/18.
@@ -26,6 +27,8 @@ public abstract class LoginRequestActivity extends AppCompatActivity {
                     String refreshToken = data.getStringExtra(LoginActivity.EXTRA_REFRESH_TOKEN);
                     Tools.setAuthentication(this, accessToken, refreshToken, username);
                     Log.d("AccessToken",  accessToken);
+                    startService(new Intent(LoginRequestActivity.this, BackgroundService.class));
+
                     loginSuccessful();
                 } else {
                     Toast.makeText(this, "Something went wrong.", Toast.LENGTH_SHORT).show();

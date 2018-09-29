@@ -20,8 +20,8 @@ import com.app.dlike.adapters.PostsAdapter;
 import com.app.dlike.R;
 import com.app.dlike.Tools;
 import com.app.dlike.api.Steem;
-import com.app.dlike.api.models.Discussion;
-import com.app.dlike.api.models.VoteOperation;
+import com.app.dlike.models.Discussion;
+import com.app.dlike.models.VoteOperation;
 
 import org.json.JSONException;
 import org.json.JSONObject;

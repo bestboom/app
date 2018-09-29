@@ -65,7 +65,7 @@ public class WritePostActivity extends LoginRequestActivity implements RichEdito
 
         editor.setText(text);
 
-        Picasso.with(this)
+        Picasso.get()
                 .load("https://steemitimages.com/u/" + Tools.getUsername(this) + "/avatar")
                 .placeholder(R.drawable.profile)
                 .into(userProfileImage);

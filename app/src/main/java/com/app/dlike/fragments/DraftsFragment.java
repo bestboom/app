@@ -16,7 +16,7 @@ import com.app.dlike.R;
 import com.app.dlike.Tools;
 import com.app.dlike.adapters.DraftsAdapter;
 import com.app.dlike.api.DLike;
-import com.app.dlike.api.models.Draft;
+import com.app.dlike.models.Draft;
 
 import java.util.ArrayList;
 

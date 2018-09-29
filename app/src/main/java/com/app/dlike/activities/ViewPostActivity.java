@@ -12,10 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -27,10 +25,13 @@ import com.app.dlike.Tools;
 import com.app.dlike.adapters.CommentsAdapter;
 import com.app.dlike.adapters.TagsAdapter;
 import com.app.dlike.api.Steem;
-import com.app.dlike.api.models.Comment;
-import com.app.dlike.api.models.CommentOperation;
-import com.app.dlike.api.models.Discussion;
-import com.app.dlike.api.models.VoteOperation;
+import com.app.dlike.models.Comment;
+import com.app.dlike.models.CommentModel;
+import com.app.dlike.models.CommentOperation;
+import com.app.dlike.models.Discussion;
+import com.app.dlike.models.MentionModel;
+import com.app.dlike.models.UpVoteModel;
+import com.app.dlike.models.VoteOperation;
 import com.app.dlike.widgets.VotingDialog;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.google.gson.Gson;
@@ -88,16 +89,38 @@ public class ViewPostActivity extends LoginRequestActivity implements SwipeRefre
     private RecyclerView tagsRecyclerView;
     private TagsAdapter tagsAdapter;
     private TextView commentHintTextView;
-
     private String comment = "";
 
+
+    private UpVoteModel upVoteModel;
+    private MentionModel mentionModel;
+    private CommentModel commentModel;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         discussion = getIntent().getParcelableExtra(BUNDLE_DISCUSSION);
+        upVoteModel = UpVoteModel.gsonToUpvote(getIntent().getStringExtra("upvote"));
+        mentionModel = MentionModel.gsonToMention(getIntent().getStringExtra("mentions"));
+        commentModel = CommentModel.gsonToComment(getIntent().getStringExtra("comment"));
         if (discussion == null) {
-            finish();
+            discussion = new Discussion();
+            if(upVoteModel == null){
+                if(mentionModel == null){
+                    if(commentModel == null)
+                        finish();
+                    else{
+                        discussion.author = commentModel.getParent_author();
+                        discussion.permLink = commentModel.getParent_permlink();
+                    }
+                }else{
+                    discussion.author = mentionModel.getAuthor();
+                    discussion.permLink = mentionModel.getPermlink();
+                }
+            }else{
+                discussion.author = upVoteModel.getAuthor();
+                discussion.permLink = upVoteModel.getPermlink();
+            }
         }
 
         setContentView(R.layout.activity_view_post);
@@ -310,7 +333,7 @@ public class ViewPostActivity extends LoginRequestActivity implements SwipeRefre
                     image = discussion.getJSONMetaData().getString("image");
                 }
                 if (image != null && !image.isEmpty()) {
-                    Picasso.with(imageView.getContext())
+                    Picasso.get()
                             .load(image)
                             .into(imageView);
                 } else {
@@ -349,7 +372,7 @@ public class ViewPostActivity extends LoginRequestActivity implements SwipeRefre
                     }
                 });
         income.setText("$ " + discussion.pendingPayoutValue.substring(0, 4));
-        Picasso.with(this)
+        Picasso.get()
                 .load("https://steemitimages.com/u/" + discussion.author + "/avatar")
                 .placeholder(R.drawable.profile)
                 .into(authorImageView);

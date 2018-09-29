@@ -35,7 +35,7 @@ public class ProfileViewActivity extends LoginRequestActivity {
         String username = getIntent().getStringExtra(EXTRA_USERNAME);
         setTitle("Profile");
 
-        Picasso.with(this)
+        Picasso.get()
                 .load("https://steemitimages.com/u/" + username + "/avatar")
                 .placeholder(R.drawable.profile)
                 .into(profileImageView);

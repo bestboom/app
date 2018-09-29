@@ -13,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -40,9 +39,9 @@ import android.widget.Toast;
 import com.app.dlike.R;
 import com.app.dlike.Tools;
 import com.app.dlike.api.DLike;
-import com.app.dlike.api.models.Categories;
-import com.app.dlike.api.models.Draft;
-import com.app.dlike.api.models.WebCrawlerResponse;
+import com.app.dlike.models.Categories;
+import com.app.dlike.models.Draft;
+import com.app.dlike.models.WebCrawlerResponse;
 import com.app.dlike.jobs.SchedulePostJob;
 import com.app.dlike.widgets.AddPhotoDialogFragment;
 import com.app.dlike.widgets.SchedulePostDialogFragment;
@@ -50,7 +49,6 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -407,7 +405,7 @@ public class PostActivity extends AppCompatActivity implements AddPhotoDialogFra
         if (imageURL != null && imageURL.startsWith("http")) {
             webCrawlerResponse = new WebCrawlerResponse();
             webCrawlerResponse.imgUrl = imageURL;
-            Picasso.with(mContext).load(webCrawlerResponse.imgUrl).placeholder(R.drawable.placeholder)
+            Picasso.get().load(webCrawlerResponse.imgUrl).placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder).into(collapsingImageView);
         }
         if (externalURL != null && !externalURL.isEmpty()) {
@@ -518,7 +516,7 @@ public class PostActivity extends AppCompatActivity implements AddPhotoDialogFra
 
                                         PostActivity.this.link = webCrawlerResponse.url;
 
-                                        Picasso.with(mContext).load(webCrawlerResponse.imgUrl).placeholder(R.drawable.placeholder)
+                                        Picasso.get().load(webCrawlerResponse.imgUrl).placeholder(R.drawable.placeholder)
                                                 .error(R.drawable.placeholder).into(collapsingImageView);
                                     }
                                 }
@@ -584,7 +582,7 @@ public class PostActivity extends AppCompatActivity implements AddPhotoDialogFra
         this.file = file;
         collapsingImageView.setVisibility(View.VISIBLE);
 
-        Picasso.with(mContext).load(Uri.fromFile(file)).into(collapsingImageView);
+        Picasso.get().load(Uri.fromFile(file)).into(collapsingImageView);
         bottomLayout.setVisibility(View.VISIBLE);
 
         viewLine.setVisibility(View.GONE);
